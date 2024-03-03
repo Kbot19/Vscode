@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: |
+        if [[ ! -d code-server-3.9.3-linux-amd64 ]]; then
+          wget https://github.com/cdr/code-server/releases/download/v3.9.3/code-server-3.9.3-linux-amd64.tar.gz
+          tar xvzf code-server-3.9.3-linux-amd64.tar.gz
+        fi
+
+    - name: Start code-server
+      run: |
+        cd code-server-3.9.3-linux-amd64/bin
+        ./code-server --bind-addr 0.0.0.0:8080 --auth password &
+
+    - name: Download ngrok
+      run: |
+        wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-linux-amd64.zip -O ngrok.zip
+        unzip ngrok.zip
+
+    - name: Authenticate ngrok
+      run: |
+        ./ngrok authtoken $NGROK_AUTH_TOKEN
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+
+    - name: Start ngrok tunnel
+      run: |
+        ./ngrok http 8080
