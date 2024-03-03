@@ -26,7 +26,6 @@ jobs:
     - name: Start code-server
       run: |
         cd code-server-3.9.3-linux-amd64/bin
-        ./env
         ./code-server --bind-addr 0.0.0.0:8080 --auth password &
 
     - name: Download ngrok
