@@ -26,7 +26,8 @@ jobs:
     - name: Start code-server
       run: |
         cd code-server-3.9.3-linux-amd64/bin
-        ./code-server --bind-addr 0.0.0.0:8080 --auth password &
+        ./code-server --install-extension extension.id &
+        
 
     - name: Download ngrok
       run: |
