@@ -7,6 +7,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      CODE_SERVER_PASSWORD: 2024  # تحديد كلمة المرور كمتغير بيئي
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -26,7 +29,7 @@ jobs:
     - name: Start code-server
       run: |
         cd code-server-3.9.3-linux-amd64/bin
-        ./code-server --bind-addr 0.0.0.0:8080 --auth 2024 &
+        ./code-server --bind-addr 0.0.0.0:8080 --auth password &
 
     - name: Download ngrok
       run: |
