@@ -3,7 +3,11 @@ name: Selenium Test
 on:
   push:
     branches:
-      - main  # يمكنك تغيير هذا إلى اسم الفرع الذي تريد تشغيل الاختبارات عند دفع التغييرات إليه
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # يسمح بتشغيل العمل يدوياً من واجهة GitHub Actions
 
 jobs:
   test:
@@ -46,10 +50,3 @@ driver.get("https://www.google.com")
 print(driver.title)
 driver.quit()
 EOF
-
-# إضافة قابلية التشغيل اليدوي
-  manual:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Manual step
-      run: echo "This job has been manually triggered"
